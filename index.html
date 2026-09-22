@@ -189,7 +189,6 @@
     }
 
     @media (max-width: 500px) {
-
       .container {
         padding: 15px 12px 40px;
       }
@@ -211,219 +210,267 @@
 
 <body>
 
-  <div class="container">
+<div class="container">
 
-    <div class="header">
+  <div class="header">
 
-      <img
-        src="lordmodi.jpeg"
-        class="logo"
-        alt="LordModi.9 Logo"
-      >
+    <img
+      src="lordmodi.jpeg"
+      class="logo"
+      alt="LordModi.9 Logo"
+    >
 
-      <h1>LordModi.9</h1>
+    <h1>LordModi.9</h1>
 
-      <p class="subtitle">
-        🎁 Giveaway • 500 Participants • 10 Winners
-      </p>
+    <p class="subtitle">
+      🎁 Giveaway • 500 Participants • 10 Winners
+    </p>
+
+  </div>
+
+
+  <div class="card">
+
+    <div class="counter">
+
+      <div class="counter-number">
+        <span id="participantCount">0</span> / 500
+      </div>
+
+      <div class="counter-text">
+        Participants
+      </div>
+
+      <div class="progress">
+        <div
+          class="progress-bar"
+          id="progressBar">
+        </div>
+      </div>
 
     </div>
 
 
-    <div class="card">
+    <div id="participationForm">
 
-      <div class="counter">
+      <label for="name">
+        Your Name
+      </label>
 
-        <div class="counter-number">
-          <span id="participantCount">0</span> / 500
-        </div>
-
-        <div class="counter-text">
-          Participants
-        </div>
-
-        <div class="progress">
-          <div
-            class="progress-bar"
-            id="progressBar">
-          </div>
-        </div>
-
-      </div>
+      <input
+        type="text"
+        id="name"
+        placeholder="Enter your name"
+        maxlength="50"
+      >
 
 
-      <div id="participationForm">
+      <label for="telegram">
+        Telegram ID
+      </label>
 
-        <label for="name">
-          Your Name
-        </label>
-
-        <input
-          type="text"
-          id="name"
-          placeholder="Enter your name"
-          maxlength="50"
-          autocomplete="name"
-        >
+      <input
+        type="text"
+        id="telegram"
+        placeholder="@yourusername"
+        maxlength="50"
+      >
 
 
-        <label for="telegram">
-          Telegram ID
-        </label>
-
-        <input
-          type="text"
-          id="telegram"
-          placeholder="@yourusername"
-          maxlength="50"
-          autocomplete="off"
-        >
-
-
-        <button
-          id="participateBtn"
-          onclick="participate()"
-        >
-          🎁 Participate
-        </button>
-
-        <div
-          id="message"
-          class="message">
-        </div>
-
-      </div>
-
+      <button
+        id="participateBtn"
+        onclick="participate()">
+        🎁 Participate
+      </button>
 
       <div
-        id="closedMessage"
-        class="closed">
-
-        🚫 Participation Closed<br>
-        500 participants completed.
-
+        id="message"
+        class="message">
       </div>
 
     </div>
 
 
     <div
-      class="card winners"
-      id="winnersSection">
+      id="closedMessage"
+      class="closed">
 
-      <h2>
-        🏆 Winners
-      </h2>
+      🚫 Participation Closed<br>
+      500 participants completed.
 
-      <div id="winnerList"></div>
-
-    </div>
-
-
-    <div class="footer">
-      © 2026 LordModi.9
     </div>
 
   </div>
 
 
-  <script>
+  <div
+    class="card winners"
+    id="winnersSection">
 
-    /*
-      ==========================================
-      LORDMODI.9 GIVEAWAY
-      ==========================================
+    <h2>🏆 Winners</h2>
 
-      Google Apps Script URL next step mein
-      yahan add ki jayegi.
+    <div id="winnerList"></div>
 
-      Abhi blank rehne do.
-    */
-
-    const API_URL = "";
+  </div>
 
 
-    /*
-      ==========================================
-      PARTICIPATE
-      ==========================================
-    */
+  <div class="footer">
+    © 2026 LordModi.9
+  </div>
 
-    function participate() {
-
-      const name =
-        document.getElementById("name").value.trim();
-
-      const telegram =
-        document.getElementById("telegram").value.trim();
-
-      const message =
-        document.getElementById("message");
-
-      const button =
-        document.getElementById("participateBtn");
+</div>
 
 
-      message.innerHTML = "";
-      message.className = "message";
+<script>
+
+  /*
+  ========================================
+  GOOGLE APPS SCRIPT URL
+  ========================================
+  */
+
+  const API_URL =
+    "https://script.google.com/macros/s/AKfycby_2tNWO1LEjD27K_mTa7I6Cm4pWlVbvCZnBqTzdONOb4x6tLAdaHJZLAvHlsE52zmKzQ/exec";
 
 
-      if (name === "") {
+  /*
+  ========================================
+  PARTICIPATE
+  ========================================
+  */
+
+  function participate() {
+
+    const name =
+      document.getElementById("name").value.trim();
+
+    const telegram =
+      document.getElementById("telegram").value.trim();
+
+    const message =
+      document.getElementById("message");
+
+    const button =
+      document.getElementById("participateBtn");
+
+
+    message.innerHTML = "";
+    message.className = "message";
+
+
+    if (!name) {
+
+      message.innerHTML =
+        "Please enter your name.";
+
+      message.classList.add("error");
+
+      return;
+    }
+
+
+    if (!telegram) {
+
+      message.innerHTML =
+        "Please enter your Telegram ID.";
+
+      message.classList.add("error");
+
+      return;
+    }
+
+
+    button.disabled = true;
+    button.innerText = "Submitting...";
+
+
+    fetch(API_URL, {
+
+      method: "POST",
+
+      body: JSON.stringify({
+
+        name: name,
+        telegram: telegram
+
+      })
+
+    })
+
+    .then(response => response.json())
+
+    .then(data => {
+
+      if (data.success) {
 
         message.innerHTML =
-          "Please enter your name.";
-
-        message.classList.add("error");
-
-        return;
-      }
-
-
-      if (telegram === "") {
-
-        message.innerHTML =
-          "Please enter your Telegram ID.";
-
-        message.classList.add("error");
-
-        return;
-      }
-
-
-      /*
-        Backend next step mein connect hoga.
-      */
-
-      if (API_URL === "") {
-
-        message.innerHTML =
-          "⚙️ Website setup is in progress.<br>Please wait for the giveaway to open.";
+          "✅ Successfully participated!";
 
         message.classList.add("success");
 
-        return;
+
+        document.getElementById("name").value = "";
+
+        document.getElementById("telegram").value = "";
+
+
+        updateCounter(data.count);
+
+
+        button.disabled = false;
+
+        button.innerText =
+          "🎁 Participate";
+
+
+        loadData();
+
+      } else {
+
+        message.innerHTML =
+          "❌ " + (data.message || "Something went wrong.");
+
+        message.classList.add("error");
+
+
+        button.disabled = false;
+
+        button.innerText =
+          "🎁 Participate";
+
       }
 
+    })
 
-      button.disabled = true;
+    .catch(error => {
+
+      console.error(error);
+
+      message.innerHTML =
+        "❌ Unable to connect. Please try again.";
+
+      message.classList.add("error");
+
+
+      button.disabled = false;
 
       button.innerText =
-        "Submitting...";
+        "🎁 Participate";
+
+    });
+
+  }
 
 
-      fetch(API_URL, {
+  /*
+  ========================================
+  LOAD DATA
+  ========================================
+  */
 
-        method: "POST",
+  function loadData() {
 
-        body: JSON.stringify({
-
-          name: name,
-
-          telegram: telegram
-
-        })
-
-      })
+    fetch(API_URL)
 
       .then(response => response.json())
 
@@ -431,73 +478,7 @@
 
         if (data.success) {
 
-          message.innerHTML =
-            "✅ Successfully participated!";
-
-          message.classList.add("success");
-
-          document.getElementById("name").value = "";
-
-          document.getElementById("telegram").value = "";
-
-          loadData();
-
-        } else {
-
-          message.innerHTML =
-            data.message || "Something went wrong.";
-
-          message.classList.add("error");
-
-          button.disabled = false;
-
-          button.innerText =
-            "🎁 Participate";
-        }
-
-      })
-
-      .catch(error => {
-
-        message.innerHTML =
-          "❌ Unable to connect. Please try again.";
-
-        message.classList.add("error");
-
-        button.disabled = false;
-
-        button.innerText =
-          "🎁 Participate";
-
-      });
-
-    }
-
-
-    /*
-      ==========================================
-      LOAD PARTICIPANT DATA
-      ==========================================
-    */
-
-    function loadData() {
-
-      if (API_URL === "") {
-        return;
-      }
-
-
-      fetch(API_URL)
-
-        .then(response => response.json())
-
-        .then(data => {
-
-          if (data.count !== undefined) {
-
-            updateCounter(data.count);
-
-          }
+          updateCounter(data.count || 0);
 
 
           if (
@@ -509,145 +490,147 @@
 
           }
 
-        })
-
-        .catch(error => {
-
-          console.log(
-            "Unable to load giveaway data."
-          );
-
-        });
-
-    }
-
-
-    /*
-      ==========================================
-      UPDATE COUNTER
-      ==========================================
-    */
-
-    function updateCounter(count) {
-
-      document.getElementById(
-        "participantCount"
-      ).innerText = count;
-
-
-      const percentage =
-        (count / 500) * 100;
-
-
-      document.getElementById(
-        "progressBar"
-      ).style.width =
-        Math.min(percentage, 100) + "%";
-
-
-      if (count >= 500) {
-
-        document.getElementById(
-          "participateBtn"
-        ).disabled = true;
-
-
-        document.getElementById(
-          "participateBtn"
-        ).innerText =
-          "Participation Closed";
-
-
-        document.getElementById(
-          "closedMessage"
-        ).style.display =
-          "block";
-
-      }
-
-    }
-
-
-    /*
-      ==========================================
-      SHOW WINNERS
-      ==========================================
-    */
-
-    function showWinners(winners) {
-
-      const section =
-        document.getElementById(
-          "winnersSection"
-        );
-
-      const list =
-        document.getElementById(
-          "winnerList"
-        );
-
-
-      list.innerHTML = "";
-
-
-      winners.forEach(
-        (winner, index) => {
-
-          const div =
-            document.createElement("div");
-
-
-          div.className =
-            "winner";
-
-
-          div.innerHTML =
-            '<span class="winner-number">' +
-            (index + 1) +
-            ".</span> " +
-            escapeHTML(winner);
-
-
-          list.appendChild(div);
-
         }
-      );
+
+      })
+
+      .catch(error => {
+
+        console.log(
+          "Unable to load data."
+        );
+
+      });
+
+  }
 
 
-      section.style.display =
+  /*
+  ========================================
+  UPDATE COUNTER
+  ========================================
+  */
+
+  function updateCounter(count) {
+
+    document.getElementById(
+      "participantCount"
+    ).innerText = count;
+
+
+    const percentage =
+      (count / 500) * 100;
+
+
+    document.getElementById(
+      "progressBar"
+    ).style.width =
+      Math.min(percentage, 100) + "%";
+
+
+    if (count >= 500) {
+
+      document.getElementById(
+        "participateBtn"
+      ).disabled = true;
+
+
+      document.getElementById(
+        "participateBtn"
+      ).innerText =
+        "Participation Closed";
+
+
+      document.getElementById(
+        "closedMessage"
+      ).style.display =
         "block";
 
     }
 
-
-    /*
-      ==========================================
-      SECURITY AGAINST HTML IN NAME
-      ==========================================
-    */
-
-    function escapeHTML(text) {
-
-      const div =
-        document.createElement("div");
-
-      div.textContent =
-        text;
-
-      return div.innerHTML;
-
-    }
+  }
 
 
-    /*
-      ==========================================
-      START
-      ==========================================
-    */
+  /*
+  ========================================
+  SHOW WINNERS
+  ========================================
+  */
 
-    loadData();
+  function showWinners(winners) {
 
-  </script>
+    const section =
+      document.getElementById(
+        "winnersSection"
+      );
+
+    const list =
+      document.getElementById(
+        "winnerList"
+      );
+
+
+    list.innerHTML = "";
+
+
+    winners.forEach(
+      (winner, index) => {
+
+        const div =
+          document.createElement("div");
+
+
+        div.className =
+          "winner";
+
+
+        div.innerHTML =
+          '<span class="winner-number">' +
+          (index + 1) +
+          '.</span> ' +
+          escapeHTML(winner);
+
+
+        list.appendChild(div);
+
+      }
+    );
+
+
+    section.style.display =
+      "block";
+
+  }
+
+
+  /*
+  ========================================
+  ESCAPE HTML
+  ========================================
+  */
+
+  function escapeHTML(text) {
+
+    const div =
+      document.createElement("div");
+
+    div.textContent =
+      text;
+
+    return div.innerHTML;
+
+  }
+
+
+  /*
+  ========================================
+  START WEBSITE
+  ========================================
+  */
+
+  loadData();
+
+</script>
 
 </body>
 </html>
