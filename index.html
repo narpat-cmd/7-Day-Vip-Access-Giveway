@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>LordModi.9 Giveaway</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #080808;
+      color: white;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 650px;
+      margin: auto;
+      padding: 25px 15px 50px;
+    }
+
+    .header {
+      text-align: center;
+      padding: 25px 10px;
+    }
+
+    .logo {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ffffff;
+      margin-bottom: 15px;
+    }
+
+    .logo-placeholder {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7b2cff, #ff2d75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 45px;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #aaa;
+      font-size: 15px;
+    }
+
+    .card {
+      background: #111111;
+      border: 1px solid #292929;
+      border-radius: 18px;
+      padding: 25px;
+      margin-top: 20px;
+    }
+
+    .counter {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .counter-number {
+      font-size: 38px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .counter-text {
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    .progress {
+      width: 100%;
+      height: 10px;
+      background: #292929;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-top: 15px;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #7b2cff, #ff2d75);
+      transition: width 0.4s ease;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 7px;
+      font-size: 14px;
+      color: #ddd;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #333;
+      background: #080808;
+      color: white;
+      outline: none;
+      font-size: 15px;
+    }
+
+    input:focus {
+      border-color: #8b4cff;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #7b2cff, #ff2d75);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .message {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .success {
+      color: #48e38a;
+    }
+
+    .error {
+      color: #ff5c5c;
+    }
+
+    .winners {
+      display: none;
+    }
+
+    .winners h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .winner {
+      padding: 13px;
+      margin: 8px 0;
+      background: #191919;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .footer {
+      text-align: center;
+      color: #666;
+      font-size: 13px;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="header">
+
+      <!-- Logo baad mein yahan add karenge -->
+      <div class="logo-placeholder">👑</div>
+
+      <h1>LordModi.9</h1>
+
+      <p class="subtitle">
+        500 Participants • 10 Winners
+      </p>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="counter">
+
+        <div class="counter-number">
+          <span id="participantCount">0</span> / 500
+        </div>
+
+        <div class="counter-text">
+          Participants
+        </div>
+
+        <div class="progress">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+      </div>
+
+
+      <div id="participationForm">
+
+        <label for="name">
+          Your Name
+        </label>
+
+        <input
+          type="text"
+          id="name"
+          placeholder="Enter your name"
+          maxlength="50"
+        >
+
+
+        <label for="telegram">
+          Telegram ID
+        </label>
+
+        <input
+          type="text"
+          id="telegram"
+          placeholder="@yourusername"
+          maxlength="50"
+        >
+
+
+        <button id="participateBtn" onclick="participate()">
+          🎁 Participate
+        </button>
+
+        <div id="message" class="message"></div>
+
+      </div>
+
+    </div>
+
+
+    <div class="card winners" id="winnersSection">
+
+      <h2>🏆 Winners</h2>
+
+      <div id="winnerList"></div>
+
+    </div>
+
+
+    <div class="footer">
+      © 2026 LordModi.9
+    </div>
+
+  </div>
+
+
+  <script>
+
+    /*
+      BACKEND URL YAHAN BAAD MEIN ADD HOGA.
+
+      Google Apps Script banane ke baad
+      is URL ko yahan paste karenge.
+    */
+
+    const API_URL = "";
+
+
+    function participate() {
+
+      const name = document.getElementById("name").value.trim();
+      const telegram = document.getElementById("telegram").value.trim();
+
+      const message = document.getElementById("message");
+      const button = document.getElementById("participateBtn");
+
+
+      message.innerHTML = "";
+      message.className = "message";
+
+
+      if (!name) {
+        message.innerHTML = "Please enter your name.";
+        message.classList.add("error");
+        return;
+      }
+
+
+      if (!telegram) {
+        message.innerHTML = "Please enter your Telegram ID.";
+        message.classList.add("error");
+        return;
+      }
+
+
+      /*
+        Backend connect karne ke baad
+        actual participation yahan chalega.
+      */
+
+      message.innerHTML =
+        "Website setup ho raha hai. Backend next step mein connect hoga.";
+      message.classList.add("success");
+
+    }
+
+
+    function updateCounter(count) {
+
+      document.getElementById("participantCount").innerText = count;
+
+      const percentage = (count / 500) * 100;
+
+      document.getElementById("progressBar").style.width =
+        Math.min(percentage, 100) + "%";
+
+
+      if (count >= 500) {
+
+        document.getElementById("participateBtn").disabled = true;
+
+        document.getElementById("participateBtn").innerText =
+          "Participation Closed";
+
+      }
+
+    }
+
+  </script>
+
+</body>
+</html>
