@@ -14,9 +14,9 @@
     }
 
     body {
-      font-family: Arial, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
       background: #080808;
-      color: white;
+      color: #fff;
       min-height: 100vh;
     }
 
@@ -33,24 +33,12 @@
     }
 
     .logo {
-      width: 100px;
-      height: 100px;
+      width: 105px;
+      height: 105px;
       border-radius: 50%;
       object-fit: cover;
-      border: 3px solid #ffffff;
+      border: 3px solid #fff;
       margin-bottom: 15px;
-    }
-
-    .logo-placeholder {
-      width: 100px;
-      height: 100px;
-      margin: 0 auto 15px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #7b2cff, #ff2d75);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 45px;
     }
 
     h1 {
@@ -64,7 +52,7 @@
     }
 
     .card {
-      background: #111111;
+      background: #111;
       border: 1px solid #292929;
       border-radius: 18px;
       padding: 25px;
@@ -116,7 +104,7 @@
       border-radius: 10px;
       border: 1px solid #333;
       background: #080808;
-      color: white;
+      color: #fff;
       outline: none;
       font-size: 15px;
     }
@@ -132,7 +120,7 @@
       border: none;
       border-radius: 10px;
       background: linear-gradient(90deg, #7b2cff, #ff2d75);
-      color: white;
+      color: #fff;
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
@@ -151,6 +139,7 @@
       text-align: center;
       margin-top: 15px;
       font-size: 14px;
+      line-height: 1.5;
     }
 
     .success {
@@ -171,11 +160,25 @@
     }
 
     .winner {
-      padding: 13px;
+      padding: 14px;
       margin: 8px 0;
       background: #191919;
       border-radius: 10px;
       text-align: center;
+      font-weight: bold;
+    }
+
+    .winner-number {
+      color: #999;
+      margin-right: 8px;
+    }
+
+    .closed {
+      text-align: center;
+      color: #ff5c5c;
+      font-weight: bold;
+      margin-top: 15px;
+      display: none;
     }
 
     .footer {
@@ -183,6 +186,25 @@
       color: #666;
       font-size: 13px;
       margin-top: 30px;
+    }
+
+    @media (max-width: 500px) {
+
+      .container {
+        padding: 15px 12px 40px;
+      }
+
+      h1 {
+        font-size: 27px;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      .counter-number {
+        font-size: 34px;
+      }
     }
   </style>
 </head>
@@ -193,13 +215,16 @@
 
     <div class="header">
 
-      <!-- Logo baad mein yahan add karenge -->
-      <div class="logo-placeholder">👑</div>
+      <img
+        src="lordmodi.jpeg"
+        class="logo"
+        alt="LordModi.9 Logo"
+      >
 
       <h1>LordModi.9</h1>
 
       <p class="subtitle">
-        500 Participants • 10 Winners
+        🎁 Giveaway • 500 Participants • 10 Winners
       </p>
 
     </div>
@@ -218,7 +243,10 @@
         </div>
 
         <div class="progress">
-          <div class="progress-bar" id="progressBar"></div>
+          <div
+            class="progress-bar"
+            id="progressBar">
+          </div>
         </div>
 
       </div>
@@ -235,6 +263,7 @@
           id="name"
           placeholder="Enter your name"
           maxlength="50"
+          autocomplete="name"
         >
 
 
@@ -247,23 +276,44 @@
           id="telegram"
           placeholder="@yourusername"
           maxlength="50"
+          autocomplete="off"
         >
 
 
-        <button id="participateBtn" onclick="participate()">
+        <button
+          id="participateBtn"
+          onclick="participate()"
+        >
           🎁 Participate
         </button>
 
-        <div id="message" class="message"></div>
+        <div
+          id="message"
+          class="message">
+        </div>
+
+      </div>
+
+
+      <div
+        id="closedMessage"
+        class="closed">
+
+        🚫 Participation Closed<br>
+        500 participants completed.
 
       </div>
 
     </div>
 
 
-    <div class="card winners" id="winnersSection">
+    <div
+      class="card winners"
+      id="winnersSection">
 
-      <h2>🏆 Winners</h2>
+      <h2>
+        🏆 Winners
+      </h2>
 
       <div id="winnerList"></div>
 
@@ -280,74 +330,322 @@
   <script>
 
     /*
-      BACKEND URL YAHAN BAAD MEIN ADD HOGA.
+      ==========================================
+      LORDMODI.9 GIVEAWAY
+      ==========================================
 
-      Google Apps Script banane ke baad
-      is URL ko yahan paste karenge.
+      Google Apps Script URL next step mein
+      yahan add ki jayegi.
+
+      Abhi blank rehne do.
     */
 
     const API_URL = "";
 
 
+    /*
+      ==========================================
+      PARTICIPATE
+      ==========================================
+    */
+
     function participate() {
 
-      const name = document.getElementById("name").value.trim();
-      const telegram = document.getElementById("telegram").value.trim();
+      const name =
+        document.getElementById("name").value.trim();
 
-      const message = document.getElementById("message");
-      const button = document.getElementById("participateBtn");
+      const telegram =
+        document.getElementById("telegram").value.trim();
+
+      const message =
+        document.getElementById("message");
+
+      const button =
+        document.getElementById("participateBtn");
 
 
       message.innerHTML = "";
       message.className = "message";
 
 
-      if (!name) {
-        message.innerHTML = "Please enter your name.";
+      if (name === "") {
+
+        message.innerHTML =
+          "Please enter your name.";
+
         message.classList.add("error");
+
         return;
       }
 
 
-      if (!telegram) {
-        message.innerHTML = "Please enter your Telegram ID.";
+      if (telegram === "") {
+
+        message.innerHTML =
+          "Please enter your Telegram ID.";
+
         message.classList.add("error");
+
         return;
       }
 
 
       /*
-        Backend connect karne ke baad
-        actual participation yahan chalega.
+        Backend next step mein connect hoga.
       */
 
-      message.innerHTML =
-        "Website setup ho raha hai. Backend next step mein connect hoga.";
-      message.classList.add("success");
+      if (API_URL === "") {
+
+        message.innerHTML =
+          "⚙️ Website setup is in progress.<br>Please wait for the giveaway to open.";
+
+        message.classList.add("success");
+
+        return;
+      }
+
+
+      button.disabled = true;
+
+      button.innerText =
+        "Submitting...";
+
+
+      fetch(API_URL, {
+
+        method: "POST",
+
+        body: JSON.stringify({
+
+          name: name,
+
+          telegram: telegram
+
+        })
+
+      })
+
+      .then(response => response.json())
+
+      .then(data => {
+
+        if (data.success) {
+
+          message.innerHTML =
+            "✅ Successfully participated!";
+
+          message.classList.add("success");
+
+          document.getElementById("name").value = "";
+
+          document.getElementById("telegram").value = "";
+
+          loadData();
+
+        } else {
+
+          message.innerHTML =
+            data.message || "Something went wrong.";
+
+          message.classList.add("error");
+
+          button.disabled = false;
+
+          button.innerText =
+            "🎁 Participate";
+        }
+
+      })
+
+      .catch(error => {
+
+        message.innerHTML =
+          "❌ Unable to connect. Please try again.";
+
+        message.classList.add("error");
+
+        button.disabled = false;
+
+        button.innerText =
+          "🎁 Participate";
+
+      });
 
     }
 
 
+    /*
+      ==========================================
+      LOAD PARTICIPANT DATA
+      ==========================================
+    */
+
+    function loadData() {
+
+      if (API_URL === "") {
+        return;
+      }
+
+
+      fetch(API_URL)
+
+        .then(response => response.json())
+
+        .then(data => {
+
+          if (data.count !== undefined) {
+
+            updateCounter(data.count);
+
+          }
+
+
+          if (
+            data.winners &&
+            data.winners.length === 10
+          ) {
+
+            showWinners(data.winners);
+
+          }
+
+        })
+
+        .catch(error => {
+
+          console.log(
+            "Unable to load giveaway data."
+          );
+
+        });
+
+    }
+
+
+    /*
+      ==========================================
+      UPDATE COUNTER
+      ==========================================
+    */
+
     function updateCounter(count) {
 
-      document.getElementById("participantCount").innerText = count;
+      document.getElementById(
+        "participantCount"
+      ).innerText = count;
 
-      const percentage = (count / 500) * 100;
 
-      document.getElementById("progressBar").style.width =
+      const percentage =
+        (count / 500) * 100;
+
+
+      document.getElementById(
+        "progressBar"
+      ).style.width =
         Math.min(percentage, 100) + "%";
 
 
       if (count >= 500) {
 
-        document.getElementById("participateBtn").disabled = true;
+        document.getElementById(
+          "participateBtn"
+        ).disabled = true;
 
-        document.getElementById("participateBtn").innerText =
+
+        document.getElementById(
+          "participateBtn"
+        ).innerText =
           "Participation Closed";
+
+
+        document.getElementById(
+          "closedMessage"
+        ).style.display =
+          "block";
 
       }
 
     }
+
+
+    /*
+      ==========================================
+      SHOW WINNERS
+      ==========================================
+    */
+
+    function showWinners(winners) {
+
+      const section =
+        document.getElementById(
+          "winnersSection"
+        );
+
+      const list =
+        document.getElementById(
+          "winnerList"
+        );
+
+
+      list.innerHTML = "";
+
+
+      winners.forEach(
+        (winner, index) => {
+
+          const div =
+            document.createElement("div");
+
+
+          div.className =
+            "winner";
+
+
+          div.innerHTML =
+            '<span class="winner-number">' +
+            (index + 1) +
+            ".</span> " +
+            escapeHTML(winner);
+
+
+          list.appendChild(div);
+
+        }
+      );
+
+
+      section.style.display =
+        "block";
+
+    }
+
+
+    /*
+      ==========================================
+      SECURITY AGAINST HTML IN NAME
+      ==========================================
+    */
+
+    function escapeHTML(text) {
+
+      const div =
+        document.createElement("div");
+
+      div.textContent =
+        text;
+
+      return div.innerHTML;
+
+    }
+
+
+    /*
+      ==========================================
+      START
+      ==========================================
+    */
+
+    loadData();
 
   </script>
 
